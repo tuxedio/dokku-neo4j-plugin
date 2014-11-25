@@ -8,7 +8,7 @@ if [[ ! -d "$DOKKU_ROOT/.neo4j" ]]; then
 
   chown -R dokku: "$DOKKU_ROOT/.neo4j"
 
-  docker run -i -t -d --name neo4j -v "$DOKKU_ROOT/.neo4j/data":/var/lib/neo4j/data --privileged -p 7474:7474 "$IMAGE"
+  docker run -i -t -d neo4j -v "$DOKKU_ROOT/.neo4j/data":/var/lib/neo4j/data --privileged -p 7474:7474 "$IMAGE"
   id=$(docker ps | grep "$IMAGE":latest |  awk '{print $1}')
   neo4j_ip=$(docker port ${id} 7474 | awk '{split($0,a,":"); print a[1]}')
   neo4j_port=$(docker port ${id} 7474 | awk '{split($0,a,":"); print a[2]}')
