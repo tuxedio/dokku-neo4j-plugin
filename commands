@@ -27,7 +27,7 @@ check_container() {
   fi
 }
 
-IMAGE="aomitayo/neo4j"
+IMAGE="tpires/neo4j"
 id=$(docker ps | grep "$IMAGE":latest |  awk '{print $1}')
 if [[ -n "$id" ]]; then
   neo4j_public_ip=$(docker port ${id} 7474 | awk '{split($0,a,":"); print a[1]}')
@@ -63,7 +63,7 @@ case "$1" in
     if [[ "$id" != "" ]]; then
       echo "Neo4j container already running with ID: ${id}"
     else
-      docker run -p 7474:7474 -d -v "$DOKKU_ROOT/.neo4j/data":/var/lib/neo4j/data "$IMAGE" /var/lib/neo4j/bin/neo4j start
+      docker run -i -t -d --name neo4j -v "$DOKKU_ROOT/.neo4j/data":/var/lib/neo4j/data --privileged -p 7474:7474 "$IMAGE"
     fi
     ;;
   neo4j:stop)
